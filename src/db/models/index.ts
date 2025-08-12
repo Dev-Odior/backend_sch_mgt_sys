@@ -28,6 +28,11 @@ import Staff, { init as initStaff, associate as associateStaff } from './school/
 
 import Term, { init as initTerm, associate as associateTerm } from './school/term.model';
 
+import AcademicSession, {
+  init as initAcademicSession,
+  associate as associateAcademicSession,
+} from './school/session.model';
+
 import TeacherSubject, {
   init as initTeacherSubject,
   associate as associateTeacherSubject,
@@ -69,6 +74,7 @@ export {
   ScoreFormula,
   TeacherSubject,
   Admin,
+  AcademicSession,
   Activity,
 };
 
@@ -80,6 +86,7 @@ function associate() {
   associateScoreFormula();
   associateAdmin();
   associateActivity();
+  associateAcademicSession();
 
   associateRole();
   associateSubject();
@@ -95,6 +102,7 @@ export function init(connection: Sequelize) {
   initStudent(connection);
   initStudentSubjectScores(connection);
   initActivity(connection);
+  initAcademicSession(connection);
 
   initClassroom(connection);
   initRole(connection);

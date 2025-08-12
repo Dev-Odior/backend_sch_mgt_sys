@@ -1,10 +1,10 @@
 import { QueryOptions } from '@src/interfaces/functions.interface';
-import User from '@src/db/models/user.model';
+import { Admin, Student, Staff } from '@src/db/models';
 
 declare module 'express' {
   export interface Request {
     queryOpts?: QueryOptions;
-    user?: User;
+    user?: Student | Staff | Admin;
     paramIds?: {
       [key: string]: number;
     };

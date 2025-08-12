@@ -14,6 +14,7 @@ import {
   ChangePasswordDTO,
   StaffCreationDTO,
   StudentCreationDTO,
+  UserForLoginDTO,
 } from '@src/interfaces/dto/index.dto';
 import { UserRoleEnum } from '@src/db/models/school/staff.model';
 import teachSubjectService from '../staff/teacher-subject.service';
@@ -30,7 +31,7 @@ class AuthService extends BaseService<Staff> {
 
   // This function registers a new staff
   public async register(data: StaffCreationDTO) {
-    const { email, subjectIds } = data;
+    const { email } = data;
 
     const isExisting = await staffService.get({ email });
 
@@ -45,7 +46,9 @@ class AuthService extends BaseService<Staff> {
     await this.defaultModel.sequelize.transaction(async (transaction) => {
       staff = await this.defaultModel.create(data, { transaction });
 
-      await teachSubjectService.bulkCreate(staff.id, subjectIds, transaction);
+      if (data.subjectIds) {
+        await teachSubjectService.bulkCreate(staff.id, data.subjectIds, transaction);
+      }
     });
 
     const loginData = await this.login(staff);
@@ -97,7 +100,7 @@ class AuthService extends BaseService<Staff> {
     }
   }
 
-  public async getUserForLogin(email: string, password: string, role: UserRoleEnum) {
+  public async getUserForLogin({ role, email, password }: UserForLoginDTO) {
     let data: Student | Staff | Admin | null = null;
 
     if (role === UserRoleEnum.admin) {

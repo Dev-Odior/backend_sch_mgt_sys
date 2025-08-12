@@ -3,15 +3,36 @@ import { Request } from 'express';
 import { BaseValidator } from '@src/utils/validators';
 import { GenderEnum, RolesEnum } from '@src/interfaces/school-entities.interface';
 
-class AdminAuthValidatorUtil extends BaseValidator {
+class AuthValidatorUtil extends BaseValidator {
   public create = (req: Request): ValidationResult => {
     const schema = Joi.object().keys({
       name: Joi.string().required().label('Name'),
       email: Joi.string().email().required().label('Email'),
       password: Joi.string().required().label('Password'),
-      address: Joi.string().required().label('Address'),
       contact: Joi.string().required().label('Contact'),
       logoUrl: Joi.string().required().label('Logo URL'),
+    });
+
+    return this.validate(schema, req.body);
+  };
+
+  public login = (req: Request): ValidationResult => {
+    const schema = Joi.object().keys({
+      email: Joi.string().email().required().label('Email'),
+      password: Joi.string().required().label('Password'),
+    });
+
+    return this.validate(schema, req.body);
+  };
+
+  public createSchool = (req: Request): ValidationResult => {
+    const schema = Joi.object().keys({
+      name: Joi.string().optional().label('Name'),
+      address: Joi.string().required().label('Address'),
+      contact: Joi.string().required().label('Contact'),
+      email: Joi.string().email().optional().label('Email'),
+      academicSessionName: Joi.string().required().label('Address'),
+      termStartDate: Joi.date().required().label('Term Start Date'),
     });
 
     return this.validate(schema, req.body);
@@ -122,4 +143,4 @@ class AdminAuthValidatorUtil extends BaseValidator {
   };
 }
 
-export default new AdminAuthValidatorUtil();
+export default new AuthValidatorUtil();

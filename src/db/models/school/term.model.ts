@@ -7,6 +7,8 @@ import {
   InferCreationAttributes,
 } from 'sequelize';
 
+import AcademicSession from './session.model';
+
 export interface TermAttributeI {
   id: CreationOptional<number>;
   name: string;
@@ -19,6 +21,7 @@ class Term
   implements TermAttributeI
 {
   declare id: CreationOptional<number>;
+  declare academicSessionId: number;
   declare name: string;
   declare startDate: Date;
   declare endDate: Date;
@@ -31,6 +34,10 @@ export function init(connection: Sequelize) {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      academicSessionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -53,6 +60,13 @@ export function init(connection: Sequelize) {
   );
 }
 
-export function associate() {}
+export function associate() {
+  Term.belongsTo(AcademicSession, {
+    foreignKey: 'academicSessionId',
+    as: 'academicSession',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+}
 
 export default Term;

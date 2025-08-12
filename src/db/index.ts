@@ -29,7 +29,7 @@ class DB {
       // This is for the migration if it exist
       if (serverConfig.NODE_ENV === 'development') {
         // await this.connection.sync();
-        await this.connection.sync({ alter: true });
+        // await this.connection.sync({ alter: true });
         // await this.connection.sync({ force: true });
         serverConfig.DEBUG('Db migrations completed.');
       }

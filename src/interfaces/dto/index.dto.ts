@@ -5,7 +5,9 @@ import {
   ScoreFormula,
   StudentSubjectScores,
   Term,
+  AcademicSession,
 } from '@src/db/models';
+import { UserRoleEnum } from '@src/db/models/school/staff.model';
 
 export interface StaffCreationDTO extends Omit<Staff, 'isActive'> {
   subjectIds?: number[];
@@ -28,3 +30,11 @@ export interface StudentScorePerSubjectDTO extends Omit<StudentSubjectScores, 'i
 }
 
 export interface TermDTO extends Omit<Term, 'id'> {}
+
+export interface UserForLoginDTO {
+  email: string;
+  password: string;
+  role: UserRoleEnum;
+}
+
+export interface CreateAcademicSessionDTO extends Omit<AcademicSession, 'id'> {}
