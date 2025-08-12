@@ -1,15 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { NotFoundError } from '@src/errors';
+
 import { serverConfig } from '@src/configs';
 import systemMiddleware from '@src/middlewares/system.middleware';
-// import categoryRoutes from '@src/routes/category.route';
-// import authRoutes from '@src/routes/auth';
-// import userRoutes from '@src/routes/user';
-// import meRoutes from '@src/routes/me';
-// import articleRoutes from '@src/routes/article.route';
+import { NotFoundError } from '@src/errors/indeex';
 
 // import authMiddleware from '@src/middlewares/auth.middleware';
-// import utilityRoutes from './utility.route';
+
 
 class Routes {
   public router: Router;

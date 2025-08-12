@@ -29,7 +29,7 @@ class App {
     };
 
     // This is to initialize the database
-    // this.initializeDb();
+    this.initializeDb();
 
     // This is to initalize the middleware and routes
     // this.initializeMiddlewaresAndRoutes();

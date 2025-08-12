@@ -2,10 +2,7 @@ export interface UserAttributeI {
   id: number;
   fullName: string;
   email: string;
-  isSocial: boolean;
-  isVerified: boolean;
   password?: string;
-  lastLogin?: Date;
   isAdmin: boolean;
 }
 

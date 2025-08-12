@@ -1,8 +1,8 @@
 import { Response, NextFunction, ErrorRequestHandler, Request } from 'express';
 import Joi from 'joi';
 import { serverConfig } from '@src/configs';
-import { SystemError } from '@src/errors';
 import { RequestValidator } from '@src/interfaces/functions.interface';
+import { SystemError } from '@src/errors/indeex';
 
 class SystemMiddleware {
   public errorHandler(): ErrorRequestHandler {

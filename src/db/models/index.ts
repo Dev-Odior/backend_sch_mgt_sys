@@ -1,40 +1,111 @@
 import { Sequelize } from 'sequelize';
 
-import Article, {
-  init as initArticle,
-  associate as associateArticle,
-} from '@src/db/models/article.model';
+import ClassRoom, {
+  init as initClassroom,
+  associate as associateClassroom,
+} from './school/class.model';
 
-import Category, {
-  init as initCategory,
-  associate as associateCategory,
-} from '@src/db/models/category.model';
-import User, { init as initUser, associate as associateUser } from '@src/db/models/user.model';
-import UserProfileInvite, {
-  init as initUserProfileInvite,
-} from '@src/db/models/userProfileInvite.model';
-import Profile, {
-  init as initUserProfile,
-  associate as associateUserProfile,
-} from '@src/db/models/userProfile.model';
-import Emoji, { init as initEmoji, associate as associateEmoji } from '@src/db/models/emoji.model';
+import Student, {
+  init as initStudent,
+  associate as associateStudent,
+} from './student/student.model';
 
-export { Article, Category, User, Profile, UserProfileInvite, Emoji };
+import StudentReport, {
+  init as initStudentReport,
+  associate as associateStudentReport,
+} from './student/student-report.model';
+
+import StudentSubjectScores, {
+  init as initStudentSubjectScores,
+  associate as associateStudentSubjectScores,
+} from './student/student-score.model';
+
+import School, { init as initSchool, associate as associateSchool } from './school/school.model';
+
+import Role, { init as initRole, associate as associateRole } from './school/role.model';
+
+import Staff, { init as initStaff, associate as associateStaff } from './school/staff.model';
+
+import Term, { init as initTerm, associate as associateTerm } from './school/term.model';
+
+import TeacherSubject, {
+  init as initTeacherSubject,
+  associate as associateTeacherSubject,
+} from './school/teacher-subject.model';
+
+import ScoreFormula, {
+  init as initScoreFormula,
+  associate as associateScoreFormula,
+} from './school/score-formula.model';
+
+import GradeSystem, {
+  init as initGradeSystem,
+  associate as associateGradeSystem,
+} from './school/grade-system.model';
+
+import Subject, {
+  init as initSubject,
+  associate as associateSubject,
+} from './school/subject.model';
+
+import Admin, { init as initAdmin, associate as associateAdmin } from './school/admin.model';
+
+import Activity, {
+  init as initActivity,
+  associate as associateActivity,
+} from './audit/activity.model';
+
+export {
+  ClassRoom,
+  Student,
+  StudentReport,
+  StudentSubjectScores,
+  Role,
+  School,
+  Staff,
+  Term,
+  Subject,
+  GradeSystem,
+  ScoreFormula,
+  TeacherSubject,
+  Admin,
+  Activity,
+};
 
 function associate() {
-  associateArticle();
-  associateCategory();
-  associateEmoji();
-  associateUser();
-  associateUserProfile();
+  associateStudent();
+  associateStudentSubjectScores();
+  associateStudentReport();
+  associateGradeSystem();
+  associateScoreFormula();
+  associateAdmin();
+  associateActivity();
+
+  associateRole();
+  associateSubject();
+  associateSchool();
+  associateClassroom();
+  associateStaff();
+  associateTerm();
+  associateTeacherSubject();
 }
 
 export function init(connection: Sequelize) {
-  initArticle(connection);
-  initCategory(connection);
-  initEmoji(connection);
-  initUser(connection);
-  initUserProfile(connection);
-  initUserProfileInvite(connection);
+  initStudentReport(connection);
+  initStudent(connection);
+  initStudentSubjectScores(connection);
+  initActivity(connection);
+
+  initClassroom(connection);
+  initRole(connection);
+  initSchool(connection);
+  initStaff(connection);
+  initTerm(connection);
+  initSubject(connection);
+  initGradeSystem(connection);
+  initScoreFormula(connection);
+  initTeacherSubject(connection);
+  initAdmin(connection);
+
   associate();
 }

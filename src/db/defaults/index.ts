@@ -1,42 +1,33 @@
-import { DefaultUserProfileData } from '@src/interfaces/user.interface';
-import userProfiles from '@src/resources/defaults/userProfiles.json';
-// import authConfig from '@src/configs/auth.config';
-import { EmojiAttributeI } from '@src/interfaces/emoji.interface';
+import adminUsers from '../../resources/defaults/adminProfiles.json';
+import { Admin } from '../models';
+import { adminService } from '@src/services/admin';
+import { serverConfig } from '@src/configs';
+import { UserRoleEnum } from '../models/school/staff.model';
+
+export interface DefaultAdminUserDataAttributeI {
+  fullName: string;
+  email: string;
+}
 
 class DefaultData {
-  private readonly defaultUserProfiles: DefaultUserProfileData[];
-  private readonly defaultEmojis: EmojiAttributeI[];
+  constructor(private readonly defaultAdminUsers: DefaultAdminUserDataAttributeI[] = adminUsers) {}
 
-  constructor(defaultUserProfiles = userProfiles) {
-    this.defaultUserProfiles = defaultUserProfiles;
-    // this.defaultEmojis = defaultEmojis;
-  }
+  public async migrateDefaultAdmins() {
+    this.defaultAdminUsers.forEach(async (defaultAdminUser) => {
+      const password = serverConfig.DEFAULT_USER_PROFILE_PASSWORD;
 
-  public async runDataMigration() {
-    await this.migrateDefaultUserProfiles();
-    await this.importDefaultEmojis();
-  }
+      const { fullName, email } = defaultAdminUser;
 
-  private async migrateDefaultUserProfiles() {
-    this.defaultUserProfiles.forEach(async () => {
-      // const user = await userService.create({
-      //   fullName: `${defaultUserProfile.firstName} ${defaultUserProfile.lastName}`,
-      //   email: defaultUserProfile.email,
-      //   isSocial: false,
-      //   isVerified: true,
-      //   isAdmin: true,
-      //   password: authConfig.DEFAULT_USER_PROFILE_PASSWORD,
-      // });
-      // await userProfileService.create({
-      //   firstName: defaultUserProfile.firstName,
-      //   lastName: defaultUserProfile.lastName,
-      //   phoneNumber: defaultUserProfile.phoneNumber,
-      //   userId: user.id,
-      // });
+      const adminAttribute: Partial<Admin> = {
+        fullName,
+        email,
+        password,
+        role: UserRoleEnum.admin,
+      };
+
+      await adminService.create(adminAttribute);
     });
   }
-
-  private async importDefaultEmojis() {}
 }
 
 export default new DefaultData();

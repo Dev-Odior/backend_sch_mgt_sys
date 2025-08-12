@@ -1,17 +1,16 @@
 import { Sequelize, Options } from 'sequelize';
 import { serverConfig, dbConfig } from '@src/configs';
 import { init as initModels } from '@src/db/models';
-import defaults from '@src/db/defaults';
-// import Migration from '@src/db/migration';
+import defaults from './defaults';
 
 class DB {
   public connection: Sequelize;
   private options: Options;
 
-  constructor(private readonly DefaultData = defaults) {
+  constructor() {
     this.options = {
       logging: ['development', 'staging'].includes(serverConfig.NODE_ENV) ? console.log : false,
-      dialect: 'mysql',
+      dialect: 'postgres',
       ssl: true,
       dialectOptions: {
         ssl: {
@@ -30,14 +29,14 @@ class DB {
       // This is for the migration if it exist
       if (serverConfig.NODE_ENV === 'development') {
         // await this.connection.sync();
-        // await this.connection.sync({ alter: true });
+        await this.connection.sync({ alter: true });
         // await this.connection.sync({ force: true });
         serverConfig.DEBUG('Db migrations completed.');
       }
 
+      // This is for the default migration
       if (serverConfig.RUN_DEFAULT_DATA_MIGRATION) {
-        await this.DefaultData.runDataMigration();
-        serverConfig.DEBUG('Default data migration completed.');
+        await defaults.migrateDefaultAdmins();
       }
 
       return this.connection;

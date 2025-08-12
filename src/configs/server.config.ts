@@ -8,13 +8,17 @@ class ServerConfig {
 
   public NODE_ENV = process.env.NODE_ENV || 'development';
 
-  public BASE_URL = process.env.BASE_URL
+  public BASE_URL = process.env.BASE_URL;
 
   public ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS;
 
   public FRONTEND_URL = process.env.FRONTEND_URL;
 
   public RABBITMQ_URI = process.env.RABBITMQ_URI;
+
+  public BCRYPT_SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS);
+
+  public DEFAULT_USER_PROFILE_PASSWORD = process.env.DEFAULT_USER_PROFILE_PASSWORD;
 
   public RUN_DEFAULT_DATA_MIGRATION =
     process.env.RUN_DEFAULT_DATA_MIGRATION == 'true' ? true : false;
