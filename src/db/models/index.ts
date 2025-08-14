@@ -53,6 +53,11 @@ import Subject, {
   associate as associateSubject,
 } from './school/subject.model';
 
+import ClassRoomSubject, {
+  init as initClassRoomSubject,
+  associate as associateClassroomSubject,
+} from './school/class-subject.model';
+
 import Admin, { init as initAdmin, associate as associateAdmin } from './school/admin.model';
 
 import Activity, {
@@ -62,6 +67,7 @@ import Activity, {
 
 export {
   ClassRoom,
+  ClassRoomSubject,
   Student,
   StudentReport,
   StudentSubjectScores,
@@ -87,6 +93,7 @@ function associate() {
   associateAdmin();
   associateActivity();
   associateAcademicSession();
+  associateClassroomSubject();
 
   associateRole();
   associateSubject();
@@ -103,6 +110,7 @@ export function init(connection: Sequelize) {
   initStudentSubjectScores(connection);
   initActivity(connection);
   initAcademicSession(connection);
+  initClassRoomSubject(connection);
 
   initClassroom(connection);
   initRole(connection);

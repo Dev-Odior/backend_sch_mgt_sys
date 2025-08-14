@@ -11,7 +11,26 @@ export default class AuthController {
       const data = await authService.login(loginData);
 
       return res.status(200).json({
-        message: 'Staff Registered Successfully.',
+        message: 'Login Successful.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in Auth Controller login method:${error}`);
+      next(error);
+    }
+  }
+  q;
+
+  public async loginUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const { body } = req;
+
+      const loginData = await authService.getUserForLogin(body);
+
+      const data = await authService.login(loginData);
+
+      return res.status(200).json({
+        message: 'Login Successful.',
         data,
       });
     } catch (error) {

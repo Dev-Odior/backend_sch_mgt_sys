@@ -4,3 +4,6 @@ export { default as scoreFormula } from './score-formular.service';
 export { default as subjectService } from './subject.service';
 export { default as termService } from './term.service';
 export { default as academicSessionService } from './academic-session.service';
+export { default as schoolService } from './school.service';
+export { default as scoreFormularService } from './score-formular.service';
+export { default as classSubjectService } from './class-subject.service';

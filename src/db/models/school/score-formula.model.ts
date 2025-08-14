@@ -11,7 +11,7 @@ export interface ScoreFormulaAttributeI {
   id: CreationOptional<number>;
   examScore: number;
   numberOfAssessment: number;
-  scorePerAssessment: number;
+  assessmentScore: number;
 }
 
 class ScoreFormula
@@ -21,7 +21,7 @@ class ScoreFormula
   declare id: CreationOptional<number>;
   declare examScore: number;
   declare numberOfAssessment: number;
-  declare scorePerAssessment: number;
+  declare assessmentScore: number;
 }
 
 export function init(connection: Sequelize) {
@@ -41,7 +41,7 @@ export function init(connection: Sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      scorePerAssessment: {
+      assessmentScore: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

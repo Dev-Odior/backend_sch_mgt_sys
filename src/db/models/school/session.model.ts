@@ -6,15 +6,12 @@ import {
   InferCreationAttributes,
   CreationOptional,
   NonAttribute,
-  HasManyGetAssociationsMixin,
 } from 'sequelize';
 import Term from './term.model';
 
 export interface AcademicSessionAttributes {
   id: CreationOptional<number>;
   name: string;
-  startDate: Date;
-  endDate: Date;
   isCurrent: boolean;
   numberOfTerms: number;
 }
@@ -28,14 +25,11 @@ class AcademicSession
 {
   declare id: CreationOptional<number>;
   declare name: string;
-  declare startDate: Date;
-  declare endDate: Date;
   declare isCurrent: boolean;
   declare numberOfTerms: number;
 
   // Association
   declare terms?: NonAttribute<Term[]>;
-  declare getTerms: HasManyGetAssociationsMixin<Term>;
 }
 
 export function init(connection: Sequelize) {
@@ -48,14 +42,6 @@ export function init(connection: Sequelize) {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      startDate: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-      },
-      endDate: {
-        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       isCurrent: {

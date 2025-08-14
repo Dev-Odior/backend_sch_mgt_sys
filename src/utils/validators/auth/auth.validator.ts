@@ -20,6 +20,7 @@ class AuthValidatorUtil extends BaseValidator {
     const schema = Joi.object().keys({
       email: Joi.string().email().required().label('Email'),
       password: Joi.string().required().label('Password'),
+      role: Joi.string().required().label('Role'),
     });
 
     return this.validate(schema, req.body);
@@ -52,7 +53,6 @@ class AuthValidatorUtil extends BaseValidator {
 
   public createStudent = (req: Request): ValidationResult => {
     const schema = Joi.object().keys({
-      schoolId: Joi.number().required().label('School ID'),
       surname: Joi.string().required().label('Surname'),
       firstName: Joi.string().required().label('First Name'),
       middleName: Joi.string().required().label('Middle Name'),
@@ -76,11 +76,17 @@ class AuthValidatorUtil extends BaseValidator {
 
   public createStaff = (req: Request): ValidationResult => {
     const schema = Joi.object().keys({
-      schoolId: Joi.number().required().label('School ID'),
       fullName: Joi.string().required().label('Full Name'),
       email: Joi.string().email().required().label('Email'),
       phoneNumber: Joi.string().required().label('Phone Number'),
-      subjects: Joi.array().items(Joi.number()).required().label('Subjects'),
+      subjectIds: Joi.array()
+        .items(Joi.number())
+        .when('role', {
+          is: RolesEnum.TEACHER,
+          then: Joi.required(),
+          otherwise: Joi.optional(),
+        })
+        .label('Subject IDs'),
       classId: Joi.number().required().label('Class ID'),
       gender: Joi.string()
         .required()
@@ -92,7 +98,7 @@ class AuthValidatorUtil extends BaseValidator {
         .label('Role'),
       password: Joi.string().required().label('Password'),
       employeeNumber: Joi.string().required().label('Employee Number'),
-      specialization: Joi.string().required().label('Specialization'),
+      specialization: Joi.string().optional().label('Specialization'),
       dateOfBirth: Joi.date().required().label('Date of Birth'),
       passportUrl: Joi.string().required().label('Passport URL'),
     });

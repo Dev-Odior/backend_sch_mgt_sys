@@ -20,6 +20,7 @@ import { UserRoleEnum } from '@src/db/models/school/staff.model';
 import teachSubjectService from '../staff/teacher-subject.service';
 import { BadRequestError, ConflictError } from '@src/errors/indeex';
 import classService from '../school/class.service';
+import { subjectService } from '../school';
 
 class AuthService extends BaseService<Staff> {
   constructor() {
@@ -27,16 +28,23 @@ class AuthService extends BaseService<Staff> {
   }
 
   private AuthEncryptKey = fs.readFileSync(path.join(process.cwd(), 'private.key')).toString();
-  private AuthDecryptKey = fs.readFileSync(path.join(process.cwd(), 'public.key')).toString();
+  // private AuthDecryptKey = fs.readFileSync(path.join(process.cwd(), 'public.key')).toString();
 
   // This function registers a new staff
   public async register(data: StaffCreationDTO) {
-    const { email } = data;
+    const { email, employeeNumber } = data;
 
-    const isExisting = await staffService.get({ email });
+    const [isExisting, employeeNumberExists] = await Promise.all([
+      staffService.get({ email }),
+      staffService.get({ employeeNumber }),
+    ]);
 
     if (isExisting) {
-      throw new ConflictError('Teacher with this email already exist.');
+      throw new ConflictError('Staff with this email already exist.');
+    }
+
+    if (employeeNumberExists) {
+      throw new ConflictError('Staff with this employee id already exist.');
     }
 
     await this.runStaffValidations(data);
@@ -51,17 +59,20 @@ class AuthService extends BaseService<Staff> {
       }
     });
 
-    const loginData = await this.login(staff);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...staffData } = staff.toJSON();
 
-    return loginData;
+    return staffData;
   }
 
   // This function registers students
   public async registerStudent(data: StudentCreationDTO) {
     const student: Student = await studentService.create(data);
 
-    const loginData = await this.login(student);
-    return loginData;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...studentData } = student.toJSON();
+
+    return studentData;
   }
 
   // This function login Admin
@@ -128,7 +139,8 @@ class AuthService extends BaseService<Staff> {
 
   public verifyToken(token: string): DecodedToken {
     try {
-      const payload = jwt.verify(token, this.AuthDecryptKey) as unknown as Student | Staff | Admin;
+      const payload = jwt.verify(token, this.AuthEncryptKey) as unknown as Student | Staff | Admin;
+
       return {
         payload,
         expired: false,
@@ -197,15 +209,19 @@ class AuthService extends BaseService<Staff> {
   private async runStaffValidations(data: StaffCreationDTO) {
     const { role, subjectIds, classId } = data;
 
-    await classService.getOrError({ id: classId });
+    const classRoom = await classService.get({ id: classId });
+
+    if (!classRoom) {
+      throw new BadRequestError('Class room does not exit create some.');
+    }
 
     if (role === UserRoleEnum.teacher) {
-      const subjects = await teachSubjectService.getAll({
+      const subjects = await subjectService.getAll({
         id: subjectIds,
       });
 
       if (subjects.length !== subjectIds.length) {
-        throw new BadRequestError('Some of the subjects you have entered is not valid');
+        throw new BadRequestError('You have entered subjects that do not exist within the school');
       }
     }
   }

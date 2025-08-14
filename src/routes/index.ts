@@ -3,9 +3,12 @@ import { Router, Request, Response } from 'express';
 import { serverConfig } from '@src/configs';
 import systemMiddleware from '@src/middlewares/system.middleware';
 import { NotFoundError } from '@src/errors/indeex';
-
-// import authMiddleware from '@src/middlewares/auth.middleware';
-
+import authRoutes from '@src/routes/auth/index';
+import userManagementRoutes from './user-management';
+import onboardingRoutes from './onboarding/onboarding.route';
+import classRoutes from './class';
+import studentRoutes from './student';
+import subjectRoutes from './subject';
 
 class Routes {
   public router: Router;
@@ -28,7 +31,17 @@ class Routes {
 
     this.router.use(systemMiddleware.formatRequestQuery);
 
-    // this.router.use('/auth', authRoutes);
+    this.router.use('/auth', authRoutes);
+
+    this.router.use('/user-management', userManagementRoutes);
+
+    this.router.use('/onboarding', onboardingRoutes);
+
+    this.router.use('/class', classRoutes);
+
+    this.router.use('/student', studentRoutes);
+
+    this.router.use('/subject', subjectRoutes);
 
     // this.router.use('/me', authMiddleware.validateUserAccess, meRoutes);
 

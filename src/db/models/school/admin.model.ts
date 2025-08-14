@@ -68,6 +68,7 @@ export function init(connection: Sequelize) {
       sequelize: connection,
       tableName: 'admin_info',
       timestamps: true,
+
       defaultScope: {
         attributes: { exclude: ['password'] },
       },

@@ -10,6 +10,8 @@ import {
 } from 'sequelize';
 import Classroom from '../school/class.model';
 import { UserRoleEnum } from '../school/staff.model';
+import { serverConfig } from '@src/configs';
+import bcrypt from 'bcryptjs';
 
 export interface StudentAttributesI {
   id: CreationOptional<number>;
@@ -87,7 +89,7 @@ export function init(connection: Sequelize) {
         allowNull: false,
       },
       admissionNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         unique: true,
       },
@@ -121,6 +123,31 @@ export function init(connection: Sequelize) {
       sequelize: connection,
       tableName: 'student', // lowercase snake_case
       timestamps: true,
+      defaultScope: {
+        attributes: { exclude: ['password'] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: {
+            include: ['password'],
+          },
+        },
+      },
+      hooks: {
+        beforeCreate: async (user) => {
+          if (user.password) {
+            const salt = bcrypt.genSaltSync(serverConfig.BCRYPT_SALT_ROUNDS);
+            user.password = bcrypt.hashSync(user.password, salt);
+          }
+        },
+        beforeUpdate: async (user) => {
+          const changes = user.changed() as string[];
+          if (user.changed() && changes.includes('password')) {
+            const salt = bcrypt.genSaltSync(serverConfig.BCRYPT_SALT_ROUNDS);
+            user.password = bcrypt.hashSync(user.password, salt);
+          }
+        },
+      },
     },
   );
 }

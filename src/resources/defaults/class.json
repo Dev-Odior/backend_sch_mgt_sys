@@ -1,0 +1,17 @@
+[
+  { "name": "Pre-Nursery", "level": "Kindergarten" },
+  { "name": "Nursery 1", "level": "Kindergarten" },
+  { "name": "Nursery 2", "level": "Kindergarten" },
+  { "name": "Primary 1", "level": "Primary" },
+  { "name": "Primary 2", "level": "Primary" },
+  { "name": "Primary 3", "level": "Primary" },
+  { "name": "Primary 4", "level": "Primary" },
+  { "name": "Primary 5", "level": "Primary" },
+  { "name": "Primary 6", "level": "Primary" },
+  { "name": "JSS 1", "level": "Junior Secondary" },
+  { "name": "JSS 2", "level": "Junior Secondary" },
+  { "name": "JSS 3", "level": "Junior Secondary" },
+  { "name": "SS 1", "level": "Senior Secondary" },
+  { "name": "SS 2", "level": "Senior Secondary" },
+  { "name": "SS 3", "level": "Senior Secondary" }
+]

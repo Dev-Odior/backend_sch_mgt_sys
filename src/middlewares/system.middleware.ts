@@ -34,11 +34,11 @@ class SystemMiddleware {
         });
       }
 
-        if (errorCode === 500 && isProduction) {
-          res.status(500).json({
-            message: 'An unexpected error occurred. Please try again later.',
-          });
-        }
+      if (errorCode === 500 && isProduction) {
+        res.status(500).json({
+          message: 'An unexpected error occurred. Please try again later.',
+        });
+      }
 
       res.status(errorCode).json({
         message: error.message,
@@ -68,11 +68,14 @@ class SystemMiddleware {
     }
   }
 
-  
   formatRequestParamId(param: string) {
     return (req: Request, _res: Response, next: NextFunction) => {
       try {
         const { params, paramIds } = req;
+
+        console.log(param, 'This is the param');
+
+        console.log(params, 'These are the params.');
 
         req.paramIds = { ...paramIds };
         req.paramIds[`${param}`] = Number(params[param]);
@@ -84,8 +87,6 @@ class SystemMiddleware {
       }
     };
   }
-
-
 
   // public formatRequestParamIds(req: Request, _res: Response, next: NextFunction) {
   //   try {
@@ -103,10 +104,7 @@ class SystemMiddleware {
   //   }
   // }
 
-
-
   public validateRequestBody(validator: RequestValidator) {
-    
     return (req: Request, res: Response, next: NextFunction) => {
       const { error, value } = validator(req);
 

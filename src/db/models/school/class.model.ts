@@ -7,6 +7,7 @@ import {
   CreationOptional,
 } from 'sequelize';
 import Staff from './staff.model';
+import ClassRoomSubject from './class-subject.model';
 
 export interface ClassroomAttributesI {
   id: CreationOptional<number>;
@@ -50,6 +51,8 @@ export function init(connection: Sequelize) {
 
 export function associate() {
   ClassRoom.hasMany(Staff, { foreignKey: 'classId', as: 'staffMembers' });
+
+  ClassRoom.hasMany(ClassRoomSubject, { foreignKey: 'classId', as: 'classRoomSubjects' });
 }
 
 export default ClassRoom;

@@ -1,12 +1,19 @@
 import BaseService from '..';
-import { Class } from '@src/db/models';
+import { ClassRoom } from '@src/db/models';
 
-class ClassService extends BaseService<Class> {
+class ClassService extends BaseService<ClassRoom> {
   constructor() {
-    super(Class, 'Class');
+    super(ClassRoom, 'Class');
   }
 
-  async create() {}
+  async create(data: Partial<ClassRoom>) {
+    const { name, level } = data;
+
+    await this.defaultModel.findOrCreate({
+      where: { name, level },
+      defaults: { ...data },
+    });
+  }
 }
 
 export default new ClassService();

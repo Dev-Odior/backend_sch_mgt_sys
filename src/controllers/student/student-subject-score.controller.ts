@@ -1,0 +1,85 @@
+import { serverConfig } from '@src/configs';
+import { Request, Response, NextFunction } from 'express';
+import { studentScoreService } from '@src/services/student';
+import { auditService } from '@src/services/audit';
+import { ActivityTypeEnum, CreateActivityDTO } from '@src/interfaces/dto/index.dto';
+
+export default class StudentSubjectScoreController {
+  public async index(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const data = await studentScoreService.getAll({});
+
+      return res.status(200).json({
+        message: 'Student subject scores retrieved successfully.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in Student Subject Score Controller create method:${error}`);
+
+      next(error);
+    }
+  }
+
+  public async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const { body } = req;
+
+      const data = await studentScoreService.create(body, req);
+
+      return res.status(200).json({
+        message: 'Student subject score created successfully.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in Student Subject Score Controller create method:${error}`);
+
+      next(error);
+    }
+  }
+
+  public async delete(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const {
+        paramIds: { studentId },
+      } = req;
+
+      const studentSubjectScore = await studentScoreService.getOrError({ studentId });
+
+      const auditCreationAttributeI: Partial<CreateActivityDTO> = {
+        req,
+        activityOn: studentSubjectScore.subjectId,
+        activityType: ActivityTypeEnum.deleteScore,
+      };
+
+      await auditService.createAudit(auditCreationAttributeI);
+
+      await studentScoreService.deleteOrError({ studentId });
+
+      return res.status(200).json({
+        message: 'Student subject score deleted successfully.',
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in student subject score Controller delete method:${error}`);
+      next(error);
+    }
+  }
+
+  public async update(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const {
+        paramIds: { studentId },
+        body,
+      } = req;
+
+      const data = await studentScoreService.update(studentId, body, req);
+
+      return res.status(200).json({
+        message: 'Student subject score deleted successfully.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in student subject score Controller delete method:${error}`);
+      next(error);
+    }
+  }
+}

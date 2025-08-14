@@ -1,0 +1,47 @@
+[
+  {
+    "grade": "A1",
+    "lowerRange": 75,
+    "upperRange": 100
+  },
+  {
+    "grade": "B2",
+    "lowerRange": 70,
+    "upperRange": 74
+  },
+  {
+    "grade": "B3",
+    "lowerRange": 65,
+    "upperRange": 69
+  },
+  {
+    "grade": "C4",
+    "lowerRange": 60,
+    "upperRange": 64
+  },
+  {
+    "grade": "C5",
+    "lowerRange": 55,
+    "upperRange": 59
+  },
+  {
+    "grade": "C6",
+    "lowerRange": 50,
+    "upperRange": 54
+  },
+  {
+    "grade": "D7",
+    "lowerRange": 45,
+    "upperRange": 49
+  },
+  {
+    "grade": "E8",
+    "lowerRange": 40,
+    "upperRange": 44
+  },
+  {
+    "grade": "F9",
+    "lowerRange": 0,
+    "upperRange": 39
+  }
+]

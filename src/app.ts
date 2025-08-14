@@ -32,7 +32,7 @@ class App {
     this.initializeDb();
 
     // This is to initalize the middleware and routes
-    // this.initializeMiddlewaresAndRoutes();
+    this.initializeMiddlewaresAndRoutes();
 
     //This is for the signals for graceful shutdown
     const signals = ['SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM'];

@@ -11,7 +11,7 @@ export interface ActivityAttributeI {
   name: string;
   activityBy: number;
   activityOn: number;
-  description: number;
+  description: string;
 }
 
 class Activity
@@ -22,7 +22,7 @@ class Activity
   declare name: string;
   declare activityBy: number;
   declare activityOn: number;
-  declare description: number;
+  declare description: string;
 }
 
 export function init(connection: Sequelize) {
@@ -38,11 +38,11 @@ export function init(connection: Sequelize) {
         allowNull: true,
       },
       activityBy: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       activityOn: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       description: {

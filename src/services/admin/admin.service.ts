@@ -7,7 +7,13 @@ class AdminService extends BaseService<Admin> {
   }
 
   async create(data: Partial<Admin>) {
-    await this.defaultModel.create(data);
+    const { email } = data;
+    await this.defaultModel.findOrCreate({
+      where: {
+        email,
+      },
+      defaults: { ...data },
+    });
   }
 }
 

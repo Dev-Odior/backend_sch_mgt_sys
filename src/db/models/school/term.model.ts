@@ -12,6 +12,7 @@ import AcademicSession from './session.model';
 export interface TermAttributeI {
   id: CreationOptional<number>;
   name: string;
+  isActive: boolean;
   startDate: Date;
   endDate: Date;
 }
@@ -23,6 +24,7 @@ class Term
   declare id: CreationOptional<number>;
   declare academicSessionId: number;
   declare name: string;
+  declare isActive: boolean;
   declare startDate: Date;
   declare endDate: Date;
 }
@@ -42,6 +44,11 @@ export function init(connection: Sequelize) {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       startDate: {
         type: DataTypes.DATE,

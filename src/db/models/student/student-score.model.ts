@@ -19,9 +19,6 @@ export interface StudentSubjectScoresI {
   examScore: number;
   grade: string;
   total: number;
-  position: number;
-  highest: number;
-  lowest: number;
 }
 
 class StudentSubjectScores
@@ -35,13 +32,11 @@ class StudentSubjectScores
   declare subjectId: number;
   declare studentId: number;
   declare termId: number;
+  declare classId: number;
   declare contAssessment: number;
   declare examScore: number;
   declare grade: string;
   declare total: number;
-  declare position: number;
-  declare highest: number;
-  declare lowest: number;
 }
 
 export function init(connection: Sequelize) {
@@ -64,33 +59,28 @@ export function init(connection: Sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      classId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       contAssessment: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        defaultValue: 0,
       },
       examScore: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        defaultValue: 0,
       },
       grade: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       total: {
         type: DataTypes.FLOAT,
         allowNull: false,
-      },
-      position: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      highest: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-      },
-      lowest: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
+        defaultValue: 0,
       },
     },
     {

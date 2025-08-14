@@ -7,16 +7,16 @@ class ClassService extends BaseService<ScoreFormula> {
     super(ScoreFormula, 'Score Formula');
   }
 
-  async create(data: ScoreFormula) {
+  async create(data: Partial<ScoreFormula>) {
     const scoreFormulaExists = await this.get({});
 
     if (scoreFormulaExists) {
       throw new BadRequestError('Score formula already exits, update formula instead.');
     }
 
-    const { examScore, numberOfAssessment, scorePerAssessment } = data;
+    const { examScore, assessmentScore } = data;
 
-    const finalScore = examScore + numberOfAssessment * scorePerAssessment;
+    const finalScore = examScore + assessmentScore;
 
     if (finalScore > 100) {
       throw new BadRequestError('You formula sum cannot be more than 100.');
