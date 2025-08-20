@@ -7,7 +7,12 @@ import { ActivityTypeEnum, CreateActivityDTO } from '@src/interfaces/dto/index.d
 export default class StudentSubjectScoreController {
   public async index(req: Request, res: Response, next: NextFunction): Promise<Response> {
     try {
-      const data = await studentScoreService.getAll({});
+      const { queryOpts } = req;
+      const data = await studentScoreService.getAllPaginated(
+        {},
+        queryOpts,
+        studentScoreService.includeables,
+      );
 
       return res.status(200).json({
         message: 'Student subject scores retrieved successfully.',
@@ -40,10 +45,10 @@ export default class StudentSubjectScoreController {
   public async delete(req: Request, res: Response, next: NextFunction): Promise<Response> {
     try {
       const {
-        paramIds: { studentId },
+        paramIds: { id },
       } = req;
 
-      const studentSubjectScore = await studentScoreService.getOrError({ studentId });
+      const studentSubjectScore = await studentScoreService.getOrError({ id });
 
       const auditCreationAttributeI: Partial<CreateActivityDTO> = {
         req,
@@ -53,7 +58,7 @@ export default class StudentSubjectScoreController {
 
       await auditService.createAudit(auditCreationAttributeI);
 
-      await studentScoreService.deleteOrError({ studentId });
+      await studentSubjectScore.destroy();
 
       return res.status(200).json({
         message: 'Student subject score deleted successfully.',

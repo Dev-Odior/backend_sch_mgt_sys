@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Welcome to our school platform</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f8fa;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        font-size: 24px;
+        color: #2b6cb0;
+        margin-bottom: 20px;
+      }
+      .credentials {
+        background-color: #f0f4f8;
+        padding: 20px;
+        border-radius: 6px;
+        margin: 20px 0;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .credentials strong {
+        display: inline-block;
+        width: 100px;
+        color: #333;
+      }
+      .footer {
+        font-size: 12px;
+        color: #888888;
+        text-align: center;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">Welcome to our School Management Platform, {{name}}!</div>
+
+      <p>
+        You've been successfully registered as a student of our school
+      </p>
+
+      <p>Here are your login credentials:</p>
+
+      <div class="credentials">
+        <p><strong>Email:</strong> {{email}}</p>
+        <p><strong>Password:</strong> {{password}}</p>
+        <p><strong>Class:</strong> {{className}}</p>
+      </div>
+
+      <If>We recommend changing your password after your first login to keep your account secure. If you have any questions, feel free to reach out to our support team.</p>
+
+      <p>Thanks,<br /> <br/>School Management</p>
+
+      <div class="footer">&copy; 2025 [Your App Name]. All rights reserved.</div>
+    </div>
+  </body>
+</html>

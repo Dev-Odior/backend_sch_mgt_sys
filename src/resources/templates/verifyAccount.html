@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Verify Your Account</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f8fa;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .otp-code {
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 4px;
+        margin: 20px 0;
+        color: #2b6cb0;
+      }
+      .footer {
+        font-size: 12px;
+        color: #888888;
+        text-align: center;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Verify Your Account</h2>
+      <p>Hi there,</p>
+      <p>
+        To continue your account registration, please use the verification code
+        below:
+      </p>
+
+      <div class="otp-code">{{OTP}}</div>
+
+      <p>
+        This code will expire in 10 minutes. If you didn't request this, please
+        ignore this email.
+      </p>
+
+      <p>Thanks,<br />The [Your Company] Team</p>
+
+      <div class="footer">&copy; 2025 [Your Company]. All rights reserved.</div>
+    </div>
+  </body>
+</html>

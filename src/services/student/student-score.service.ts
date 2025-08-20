@@ -1,6 +1,6 @@
 import { BadRequestError } from '@src/errors/indeex';
 import BaseService from '..';
-import { ClassRoomSubject, StudentSubjectScores } from '@src/db/models';
+import { ClassRoomSubject, Student, StudentSubjectScores } from '@src/db/models';
 import {
   ActivityTypeEnum,
   CreateActivityDTO,
@@ -11,7 +11,7 @@ import scoreFormularService from '../school/score-formular.service';
 import studentService from './student.service';
 import subjectService from '../school/subject.service';
 import termService from '../school/term.service';
-import { Transaction } from 'sequelize';
+import { Includeable, Transaction } from 'sequelize';
 import { classSubjectService } from '../school';
 import { auditService } from '../audit';
 import { Request } from 'express';
@@ -20,6 +20,8 @@ class StudentScoreService extends BaseService<StudentSubjectScores> {
   constructor() {
     super(StudentSubjectScores, 'Student Subject Scores');
   }
+
+  includeables: Includeable[] = [this.generateIncludeable(Student, 'student')];
 
   async bulkCreate(
     studentId: number,

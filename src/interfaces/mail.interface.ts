@@ -5,3 +5,16 @@ export interface MailOptionsAttributeI {
   templateName: string;
   replacements?: object;
 }
+
+export interface TeacherMailAttributeI {
+  email: string;
+  name: string;
+  password: string;
+  className: string;
+}
+
+export interface StudentMailAttributeI {
+  email: string;
+  name: string;
+  password: string;
+}

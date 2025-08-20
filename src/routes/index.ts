@@ -9,6 +9,10 @@ import onboardingRoutes from './onboarding/onboarding.route';
 import classRoutes from './class';
 import studentRoutes from './student';
 import subjectRoutes from './subject';
+import dashboardRoutes from './dashboard/dashboard.route';
+import staffRoutes from './staff';
+import termRoutes from './term';
+import gradeSystemRoutes from './grade-system';
 
 class Routes {
   public router: Router;
@@ -42,6 +46,14 @@ class Routes {
     this.router.use('/student', studentRoutes);
 
     this.router.use('/subject', subjectRoutes);
+
+    this.router.use('/dashboard', dashboardRoutes);
+
+    this.router.use('/staff', staffRoutes);
+
+    this.router.use('/term', termRoutes);
+
+    this.router.use('/grade-system', gradeSystemRoutes);
 
     // this.router.use('/me', authMiddleware.validateUserAccess, meRoutes);
 

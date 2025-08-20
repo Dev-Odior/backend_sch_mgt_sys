@@ -20,9 +20,9 @@ class StudentScoreRoutes extends StudentSubjectScoreController {
       .post(systemMiddleware.validateRequestBody(studentScoreValidator.createScore), this.create);
 
     this.router
-      .route('/:studentId')
-      .put(systemMiddleware.formatRequestParamId('studentId'), this.update)
-      .post(systemMiddleware.formatRequestParamId('studentId'), this.delete);
+      .route('/:id')
+      .put(systemMiddleware.formatRequestParamId('id'), this.update)
+      .delete(systemMiddleware.formatRequestParamId('id'), this.delete);
   }
 }
 

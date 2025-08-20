@@ -19,6 +19,12 @@ class ClassSubjectRoutes extends ClassSubjectServiceController {
       .post(systemMiddleware.validateRequestBody(classSubjectValidator.create), this.create);
 
     this.router
+      .route('/delete/:classSubjectId')
+      .delete(systemMiddleware.formatRequestParamId('classSubjectId'), this.delete);
+
+    this.router.route('/get-by-teacher').get(this.getByTeacherId);
+
+    this.router
       .route('/:classId/:termId')
       .get(
         systemMiddleware.formatRequestParamId('termId'),

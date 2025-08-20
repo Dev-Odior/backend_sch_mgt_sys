@@ -14,6 +14,7 @@ export interface StudentSubjectScoresI {
   id: CreationOptional<number>;
   subjectId: number;
   studentId: number;
+  classId: number;
   termId: number;
   contAssessment: number;
   examScore: number;

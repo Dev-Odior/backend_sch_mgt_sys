@@ -23,12 +23,12 @@ export interface StaffAttributeI {
   fullName: string;
   email: string;
   phoneNumber: string;
-  classId: string;
+  classId: number;
   gender: GenderEnum;
   password: string;
-  employeeNumber: string;
-  specialization: string;
-  dateOfBirth: Date;
+  // employeeNumber: string;
+  // specialization: string;
+  // dateOfBirth: Date;
   passportUrl: string;
   isActive: boolean;
   role: UserRoleEnum;
@@ -42,13 +42,13 @@ class Staff
   declare fullName: string;
   declare email: string;
   declare phoneNumber: string;
-  declare classId: string;
+  declare classId: number;
   declare gender: GenderEnum;
   declare role: UserRoleEnum;
   declare password: string;
-  declare employeeNumber: string;
-  declare specialization: string;
-  declare dateOfBirth: Date;
+  // declare employeeNumber: string;
+  // declare specialization: string;
+  // declare dateOfBirth: Date;
   declare passportUrl: string;
   declare isActive: boolean;
 }
@@ -89,21 +89,21 @@ export function init(connection: Sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      employeeNumber: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      specialization: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      dateOfBirth: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
+      // employeeNumber: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      // },
+      // specialization: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      // },
+      // dateOfBirth: {
+      //   type: DataTypes.DATE,
+      //   allowNull: true,
+      // },
       passportUrl: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       isActive: {
         type: DataTypes.BOOLEAN,

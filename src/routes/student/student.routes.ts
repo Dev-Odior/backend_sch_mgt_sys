@@ -14,6 +14,8 @@ class StudentRoutes extends StudentController {
   routes(): void {
     this.router.route('/').get(this.index);
 
+    this.router.route('/student-by-staff').get(this.studentByStaff);
+
     this.router.route('/:id').get(this.get);
   }
 }

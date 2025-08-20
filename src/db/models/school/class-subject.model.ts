@@ -8,6 +8,7 @@ import {
 } from 'sequelize';
 import ClassRoom from './class.model';
 import Term from './term.model';
+import Subject from './subject.model';
 
 export interface ClassroomAttributesI {
   id: CreationOptional<number>;
@@ -66,6 +67,13 @@ export function associate() {
   ClassRoomSubject.belongsTo(Term, {
     foreignKey: 'termId',
     as: 'term',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+
+  ClassRoomSubject.belongsTo(Subject, {
+    foreignKey: 'subjectId',
+    as: 'subject',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   });

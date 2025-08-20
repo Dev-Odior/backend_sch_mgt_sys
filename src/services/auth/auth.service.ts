@@ -18,9 +18,10 @@ import {
 } from '@src/interfaces/dto/index.dto';
 import { UserRoleEnum } from '@src/db/models/school/staff.model';
 import teachSubjectService from '../staff/teacher-subject.service';
-import { BadRequestError, ConflictError } from '@src/errors/indeex';
+import { BadRequestError, ConflictError, UnauthorizedError } from '@src/errors/indeex';
 import classService from '../school/class.service';
 import { subjectService } from '../school';
+import mailUtil from '@src/utils/mail.util';
 
 class AuthService extends BaseService<Staff> {
   constructor() {
@@ -32,19 +33,12 @@ class AuthService extends BaseService<Staff> {
 
   // This function registers a new staff
   public async register(data: StaffCreationDTO) {
-    const { email, employeeNumber } = data;
+    const { email } = data;
 
-    const [isExisting, employeeNumberExists] = await Promise.all([
-      staffService.get({ email }),
-      staffService.get({ employeeNumber }),
-    ]);
+    const [isExisting] = await Promise.all([staffService.get({ email })]);
 
     if (isExisting) {
       throw new ConflictError('Staff with this email already exist.');
-    }
-
-    if (employeeNumberExists) {
-      throw new ConflictError('Staff with this employee id already exist.');
     }
 
     await this.runStaffValidations(data);
@@ -62,12 +56,31 @@ class AuthService extends BaseService<Staff> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...staffData } = staff.toJSON();
 
+    const classRoom = await classService.getOrError({ id: staff.classId });
+
+    const mailAttributes = {
+      name: staff.fullName,
+      email: staff.email,
+      password: data.password,
+      className: classRoom.name,
+    };
+
+    await mailUtil.sendTeacherRegistrationMail(mailAttributes);
+
     return staffData;
   }
 
   // This function registers students
   public async registerStudent(data: StudentCreationDTO) {
     const student: Student = await studentService.create(data);
+
+    const mailAttributes = {
+      name: student.firstName,
+      email: student.email,
+      password: data.password,
+    };
+
+    await mailUtil.sendStudentRegistrationMail(mailAttributes);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...studentData } = student.toJSON();
@@ -124,6 +137,12 @@ class AuthService extends BaseService<Staff> {
       data = await this.defaultModel.scope('withPassword').findOne({
         where: { email },
       });
+
+      if (!data.isActive) {
+        throw new UnauthorizedError(
+          'You are not allowed to access this application, contact administrator.',
+        );
+      }
     }
 
     if (role === UserRoleEnum.student) {

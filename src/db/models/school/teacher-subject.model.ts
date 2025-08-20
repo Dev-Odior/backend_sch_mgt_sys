@@ -22,6 +22,8 @@ class TeacherSubject
   declare id: CreationOptional<number>;
   declare staffId: number;
   declare subjectId: number;
+
+  declare readonly subject?: Subject;
 }
 
 export function init(connection: Sequelize) {

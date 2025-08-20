@@ -67,8 +67,8 @@ class AuthValidatorUtil extends BaseValidator {
       guardianName: Joi.string().required().label('Guardian Name'),
       guardianPhone: Joi.string().required().label('Guardian Phone'),
       address: Joi.string().required().label('Address'),
-      passportUrl: Joi.string().required().label('Passport URL'),
-      password: Joi.string().required().label('Password'),
+      passportUrl: Joi.string().optional().label('Passport URL'),
+      password: Joi.string().optional().label('Password'),
     });
 
     return this.validate(schema, req.body);
@@ -97,10 +97,10 @@ class AuthValidatorUtil extends BaseValidator {
         .valid(...Object.values(RolesEnum))
         .label('Role'),
       password: Joi.string().required().label('Password'),
-      employeeNumber: Joi.string().required().label('Employee Number'),
       specialization: Joi.string().optional().label('Specialization'),
-      dateOfBirth: Joi.date().required().label('Date of Birth'),
-      passportUrl: Joi.string().required().label('Passport URL'),
+      dateOfBirth: Joi.date().optional().label('Date of Birth'),
+      passportUrl: Joi.string().optional().label('Passport URL'),
+      address: Joi.string().optional().label('Address'),
     });
 
     return this.validate(schema, req.body);

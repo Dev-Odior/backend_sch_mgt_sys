@@ -1,93 +1,55 @@
-// import User from '@src/db/models/user.model';
-// import { MailOptionsAttributeI } from '@src/interfaces/mail.interface';
-// import serverConfig from '@src/configs/server.config';
-// import notificationHelper from '@src/helpers/notification.helper';
-// // import userService from '@src/services/user.service';
-// // import inviteService from '@src/services/invite.service';
-// import UserProfileInvite from '@src/db/models/userProfileInvite.model';
+import { mailService } from '@src/services/notification';
+import { MailOptionsAttributeI } from '../interfaces/notification/mail.interface';
+import { StudentMailAttributeI, TeacherMailAttributeI } from '@src/interfaces/mail.interface';
 
-// class MailUtil {
-//   public async sendForgotPasswordMail(
-//     user: User,
-//     operatingSystem: string,
-//     browserName: string,
-//   ): Promise<void> {
-//     const { id, email, fullName } = user;
-//     const token = await userService.generateVerificationToken(id);
-//     const options: MailOptionsAttributeI = {
-//       to: email,
-//       subject: 'Reset my Password',
-//       templateName: 'forgotPassword',
-//       replacements: {
-//         email,
-//         fullName,
-//         operatingSystem,
-//         browserName,
-//         link: `${serverConfig.FRONTEND_URL}/reset-password?uid=${id}&token=${token}`,
-//       },
-//     };
-//     await notificationHelper.sendMail(options);
-//   }
+class MailUtil {
+  public async sendOTPMail(OTP: string, email: string): Promise<void> {
+    const options: MailOptionsAttributeI = {
+      to: email,
+      subject: 'Verify Your Account',
+      templateName: 'verifyAccount',
+      replacements: {
+        OTP,
+      },
+    };
 
-//   public async sendInviteMail(invite: UserProfileInvite): Promise<void> {
-//     const { email, id: uid } = invite;
+    await mailService.sendMail(options);
+  }
 
-//     const token = inviteService.generateToken(invite);
+  public async sendTeacherRegistrationMail(teacherMailDTO: TeacherMailAttributeI): Promise<void> {
+    const { email, className, password, name } = teacherMailDTO;
 
-//     const options: MailOptionsAttributeI = {
-//       to: email,
-//       subject: 'HCMatrix User Guide Invite',
-//       templateName: 'userGuideInvite',
-//       replacements: {
-//         email,
-//         verifyLink: `${serverConfig.FRONTEND_URL}/invite?uid=${uid}&email=${email}&token=${token}`,
-//       },
-//     };
+    const options: MailOptionsAttributeI = {
+      to: email,
+      subject: 'School onboarding credentials',
+      templateName: 'teacherRegistrationMail',
+      replacements: {
+        password,
+        email,
+        className,
+        name,
+      },
+    };
 
-//     invite.update({ lastSent: new Date() });
+    await mailService.sendMail(options);
+  }
 
-//     await notificationHelper.sendMail(options);
-//   }
+  public async sendStudentRegistrationMail(studentMailDTO: StudentMailAttributeI): Promise<void> {
+    const { email, password, name } = studentMailDTO;
 
-//   public async sendBulkInviteMail(invites: UserProfileInvite[]): Promise<void> {
-//     await Promise.all([
-//       invites.forEach(async (invite) => {
-//         this.sendInviteMail(invite);
-//       }),
-//     ]);
-//   }
+    const options: MailOptionsAttributeI = {
+      to: email,
+      subject: 'School onboarding credentials',
+      templateName: 'studentRegistrationMail',
+      replacements: {
+        password,
+        email,
+        name,
+      },
+    };
 
-//   public async sendWelcomeMail(user: User): Promise<void> {
-//     const { id: uid, email, fullName, isVerified } = user;
+    await mailService.sendMail(options);
+  }
+}
 
-//     const options: MailOptionsAttributeI = {
-//       to: email,
-//       subject: 'Welcome to HCMatrix Admin Portal',
-//       templateName: 'welcomeAdminVerifiedUser',
-//       replacements: {
-//         fullName,
-//         email,
-//         loginLink: `${serverConfig.FRONTEND_URL}/login?email=${email}`,
-//       },
-//     };
-
-//     if (!isVerified) {
-//       const token = await userService.generateVerificationToken(uid);
-
-//       options.templateName = 'welcomeAdminUnverifiedUser';
-//       // eslint-disable-next-line @typescript-eslint/dot-notation
-//       options.replacements['verifyLink'] =
-//         `${serverConfig.FRONTEND_URL}/verify?uid=${uid}&email=${email}&token=${token}`;
-//     }
-
-//     await notificationHelper.sendMail(options);
-//   }
-
-//   public async sendBulkWelcomeMail(users: User[]): Promise<void> {
-//     for (const user of users) {
-//       await this.sendWelcomeMail(user);
-//     }
-//   }
-// }
-
-// export default new MailUtil();
+export default new MailUtil();

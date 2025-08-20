@@ -19,7 +19,6 @@ export default class AuthController {
       next(error);
     }
   }
-  q;
 
   public async loginUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
     try {
