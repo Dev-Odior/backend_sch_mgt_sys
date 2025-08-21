@@ -3,8 +3,22 @@ import { Request } from 'express';
 import { BaseValidator } from '@src/utils/validators';
 
 class OnboardingValidatorUtil extends BaseValidator {
-  public academicSession = (req: Request): ValidationResult => {
-    const schema = Joi.object().keys({});
+  public academicSessionCreation = (req: Request): ValidationResult => {
+    const schema = Joi.object().keys({
+      name: Joi.string().required().label('Academic Session Name '),
+      numberOfTerms: Joi.number().required().label('Number of Terms'),
+    });
+
+    return this.validate(schema, req.body);
+  };
+
+  public termCreation = (req: Request): ValidationResult => {
+    const schema = Joi.object().keys({
+      name: Joi.string().required().label('Academic Session Name '),
+      academicSessionId: Joi.number().required().label('academicSessionId'),
+      startDate: Joi.date().required().label('Term Start Date '),
+      endDate: Joi.date().required().label('Term End Date'),
+    });
 
     return this.validate(schema, req.body);
   };

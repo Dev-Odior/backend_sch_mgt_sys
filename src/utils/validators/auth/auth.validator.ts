@@ -62,7 +62,7 @@ class AuthValidatorUtil extends BaseValidator {
         .valid(...Object.values(GenderEnum))
         .required()
         .label('Gender'),
-      admissionNumber: Joi.number().required().label('Admission Number'),
+      admissionNumber: Joi.number().optional().label('Admission Number'),
       email: Joi.string().email().required().label('Email'),
       guardianName: Joi.string().required().label('Guardian Name'),
       guardianPhone: Joi.string().required().label('Guardian Phone'),

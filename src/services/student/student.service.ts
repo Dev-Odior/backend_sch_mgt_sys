@@ -21,9 +21,9 @@ class StudentService extends BaseService<Student> {
       classService.getOrError({ id: classId }),
     ]);
 
-    if (isExistingId) {
-      throw new ConflictError('Student with this admission number already exist.');
-    }
+    // if (isExistingId) {
+    //   throw new ConflictError('Student with this admission number already exist.');
+    // }
 
     if (isExisting) {
       throw new ConflictError('Student with this email already exist.');

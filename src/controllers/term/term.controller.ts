@@ -4,6 +4,22 @@ import { Request, Response, NextFunction } from 'express';
 import { academicSessionService } from '@src/services/school';
 
 export default class TermController {
+  public async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const { body } = req;
+
+      const data = await termService.create(body);
+
+      return res.status(200).json({
+        message: 'Term by academic session created successfully.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in term controller index method:${error}`);
+      next(error);
+    }
+  }
+
   public async getByCurrentSession(
     req: Request,
     res: Response,

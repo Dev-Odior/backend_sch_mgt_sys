@@ -13,6 +13,7 @@ import dashboardRoutes from './dashboard/dashboard.route';
 import staffRoutes from './staff';
 import termRoutes from './term';
 import gradeSystemRoutes from './grade-system';
+import sessionRoutes from './session';
 
 class Routes {
   public router: Router;
@@ -54,6 +55,8 @@ class Routes {
     this.router.use('/term', termRoutes);
 
     this.router.use('/grade-system', gradeSystemRoutes);
+
+    this.router.use('/session', sessionRoutes);
 
     // this.router.use('/me', authMiddleware.validateUserAccess, meRoutes);
 
