@@ -69,10 +69,10 @@ export default class StudentController {
         paramIds: { studentId },
       } = req;
 
-      const data = await studentService.getOrError({ id: studentId });
+      const data = await studentService.getOrError({ id: studentId }, studentService.includeables);
 
       return res.status(200).json({
-        message: 'Student deleted successfully.',
+        message: 'Student retrieved successfully.',
         data,
       });
     } catch (error) {

@@ -18,15 +18,15 @@ class StudentService extends BaseService<Student> {
   async create(data: StudentCreationDTO) {
     const { email, classId, admissionNumber } = data;
 
-    const [isExisting] = await Promise.all([
+    const [isExisting, isExistingId] = await Promise.all([
       this.get({ email }),
       this.get({ admissionNumber }),
       classService.getOrError({ id: classId }),
     ]);
 
-    // if (isExistingId) {
-    //   throw new ConflictError('Student with this admission number already exist.');
-    // }
+    if (isExistingId) {
+      throw new ConflictError('Student with this admission number already exist.');
+    }
 
     if (isExisting) {
       throw new ConflictError('Student with this email already exist.');

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import StudentController from '@src/controllers/student/student.controller';
+import systemMiddleware from '@src/middlewares/system.middleware';
 
 class StudentRoutes extends StudentController {
   public router: Router;
@@ -16,7 +17,9 @@ class StudentRoutes extends StudentController {
 
     this.router.route('/student-by-staff').get(this.studentByStaff);
 
-    this.router.route('/:id').get(this.get);
+    this.router
+      .route('/:studentId')
+      .get(systemMiddleware.formatRequestParamId('studentId'), this.get);
   }
 }
 

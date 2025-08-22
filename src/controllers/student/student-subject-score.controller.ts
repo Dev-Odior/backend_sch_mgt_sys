@@ -52,7 +52,7 @@ export default class StudentSubjectScoreController {
 
       const auditCreationAttributeI: Partial<CreateActivityDTO> = {
         req,
-        activityOn: studentSubjectScore.subjectId,
+        activityOn: studentSubjectScore.studentId,
         activityType: ActivityTypeEnum.deleteScore,
       };
 

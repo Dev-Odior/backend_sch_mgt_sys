@@ -76,7 +76,7 @@ class ClassSubjectService extends BaseService<ClassRoomSubject> {
       throw new BadRequestError('This subject already exist for this class.');
     }
 
-    const total = await this.sum('id', {
+    const total = await this.count({
       classId,
       termId,
     });

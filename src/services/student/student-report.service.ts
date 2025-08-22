@@ -5,7 +5,7 @@ import { BadRequestError } from '@src/errors/indeex';
 import { studentService, studentScoreService } from '.';
 import classSubjectService from '../school/class-subject.service';
 import { GenerateReportDTO } from '@src/interfaces/dto/index.dto';
-import { termService } from '../school';
+import { classService, termService } from '../school';
 
 interface StudentAverage {
   studentId: number;
@@ -13,8 +13,14 @@ interface StudentAverage {
 }
 
 class ReportService {
-  async generate({ studentId, classId, termId }: GenerateReportDTO) {
+  async generate({ studentId, classId, termId: currentTermId }: GenerateReportDTO) {
     const student = await studentService.getOrError({ id: studentId }, studentService.includeables);
+
+    // const term = await termService.getOrError({ status: 'active' }, [], undefined, [
+    //   ['id', 'DESC'],
+    // ]);
+
+    const termId = currentTermId;
 
     const sessionInfo = await termService.getOrError({ id: termId }, termService.includeables);
 
@@ -42,7 +48,7 @@ class ReportService {
 
     if (studentScores.length !== classSubjects.length) {
       throw new BadRequestError(
-        `You have not entered all the scores for the ${student.firstName} ${student.surname}`,
+        `You have not entered all the scores for ${student.firstName} ${student.surname}`,
       );
     }
 
@@ -60,8 +66,13 @@ class ReportService {
       student.id,
     );
 
+    const oldClassId = classSubjects[0].classId;
+
+    const classAttended = await classService.get({ id: oldClassId });
+
     return {
       student,
+      className: classAttended.name,
       sessionInfo,
       academics: finalScores,
       totalObtainable,
