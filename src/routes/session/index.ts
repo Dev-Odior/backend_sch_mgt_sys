@@ -25,7 +25,7 @@ class AcademicSessionRoutes extends AcademicSessionController {
       .get(this.index);
 
     this.router
-      .route('/toggle')
+      .route('/toggle/:id')
       .patch(systemMiddleware.formatRequestParamId('id'), this.toggleActive);
   }
 }
