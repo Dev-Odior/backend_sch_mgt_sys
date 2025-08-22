@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import { DecodedToken } from '@src/interfaces/auth.interface';
 // import mailUtil from '@src/utils/mail.util';
 import authConfig from '@src/configs/auth.config';
 import BaseService from '..';
@@ -156,7 +155,7 @@ class AuthService extends BaseService<Staff> {
     return data;
   }
 
-  public verifyToken(token: string): DecodedToken {
+  public verifyToken(token: string) {
     try {
       const payload = jwt.verify(token, this.AuthEncryptKey) as unknown as Student | Staff | Admin;
 
