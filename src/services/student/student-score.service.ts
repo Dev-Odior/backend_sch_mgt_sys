@@ -1,6 +1,6 @@
 import { BadRequestError } from '@src/errors/indeex';
 import BaseService from '..';
-import { ClassRoomSubject, Student, StudentSubjectScores } from '@src/db/models';
+import { ClassRoomSubject, Student, StudentSubjectScores, Subject } from '@src/db/models';
 import {
   ActivityTypeEnum,
   CreateActivityDTO,
@@ -21,7 +21,10 @@ class StudentScoreService extends BaseService<StudentSubjectScores> {
     super(StudentSubjectScores, 'Student Subject Scores');
   }
 
-  includeables: Includeable[] = [this.generateIncludeable(Student, 'student')];
+  includeables: Includeable[] = [
+    this.generateIncludeable(Student, 'student'),
+    this.generateIncludeable(Subject, 'subject'),
+  ];
 
   async bulkCreate(
     studentId: number,

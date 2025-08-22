@@ -1,6 +1,6 @@
 import BaseService from '..';
-import { Term } from '@src/db/models';
-import { Transaction } from 'sequelize';
+import { AcademicSession, Term } from '@src/db/models';
+import { Includeable, Transaction } from 'sequelize';
 import academicSessionService from './academic-session.service';
 import { BadRequestError } from '@src/errors/indeex';
 import moment from 'moment';
@@ -9,6 +9,8 @@ class TermService extends BaseService<Term> {
   constructor() {
     super(Term, 'Term');
   }
+
+  includeables: Includeable[] = [this.generateIncludeable(AcademicSession, 'academicSession')];
 
   async create(data: Partial<Term>, transaction?: Transaction) {
     const { academicSessionId } = data;

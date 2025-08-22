@@ -58,6 +58,8 @@ class Routes {
 
     this.router.use('/session', sessionRoutes);
 
+    this.router.use('/report');
+
     // this.router.use('/me', authMiddleware.validateUserAccess, meRoutes);
 
     // this.router.use('/user', userRoutes);

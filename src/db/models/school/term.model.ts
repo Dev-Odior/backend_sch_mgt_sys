@@ -27,6 +27,8 @@ class Term
   declare isActive: boolean;
   declare startDate: Date;
   declare endDate: Date;
+
+  declare readonly academicSession?: AcademicSession;
 }
 
 export function init(connection: Sequelize) {

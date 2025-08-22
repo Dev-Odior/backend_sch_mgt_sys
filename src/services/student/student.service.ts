@@ -1,21 +1,24 @@
 import { BadRequestError, ConflictError } from '@src/errors/indeex';
 import BaseService from '..';
-import { Student, Term } from '@src/db/models';
+import { ClassRoom, Student, Term } from '@src/db/models';
 import { PromoteStudentDTO, StudentCreationDTO } from '@src/interfaces/dto/index.dto';
 import classService from '../school/class.service';
 import { academicSessionService, classSubjectService } from '../school';
 import { UserRoleEnum } from '@src/db/models/school/staff.model';
 import moment from 'moment';
+import { Includeable } from 'sequelize';
 
 class StudentService extends BaseService<Student> {
   constructor() {
     super(Student, 'Student');
   }
 
+  includeables: Includeable[] = [this.generateIncludeable(ClassRoom, 'class')];
+
   async create(data: StudentCreationDTO) {
     const { email, classId, admissionNumber } = data;
 
-    const [isExisting, isExistingId] = await Promise.all([
+    const [isExisting] = await Promise.all([
       this.get({ email }),
       this.get({ admissionNumber }),
       classService.getOrError({ id: classId }),

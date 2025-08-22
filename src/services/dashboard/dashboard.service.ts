@@ -18,7 +18,7 @@ class DashboardService {
       gradingSystem,
       scoreFormula,
     ] = await Promise.all([
-      studentService.count({}),
+      studentService.getAll({}),
       staffService.count({ role: UserRoleEnum.teacher }),
       staffService.count({ role: UserRoleEnum.bursar }),
       Activity.findAndCountAll({ where: {} }),
@@ -28,8 +28,10 @@ class DashboardService {
       scoreFormularService.get({}),
     ]);
 
+    console.log(totalStudent.length);
+
     return {
-      totalStudent,
+      totalStudent: totalStudent.length,
       totalTeachers,
       totalBursars,
       totalMaleStudent,

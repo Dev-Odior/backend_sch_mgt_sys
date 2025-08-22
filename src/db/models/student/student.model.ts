@@ -50,6 +50,8 @@ class Student
   declare passportUrl: string;
   declare password: string;
   declare role: UserRoleEnum;
+
+  declare readonly class?: Classroom;
 }
 
 export function init(connection: Sequelize) {

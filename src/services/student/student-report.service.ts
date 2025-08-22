@@ -4,8 +4,8 @@ import { BadRequestError } from '@src/errors/indeex';
 
 import { studentService, studentScoreService } from '.';
 import classSubjectService from '../school/class-subject.service';
-import schoolService from '../school/school.service';
 import { GenerateReportDTO } from '@src/interfaces/dto/index.dto';
+import { termService } from '../school';
 
 interface StudentAverage {
   studentId: number;
@@ -14,17 +14,27 @@ interface StudentAverage {
 
 class ReportService {
   async generate({ studentId, classId, termId }: GenerateReportDTO) {
-    const student = await studentService.getOrError({ id: studentId });
+    const student = await studentService.getOrError({ id: studentId }, studentService.includeables);
 
-    const studentScores = await studentScoreService.getAll({ id: studentId, classId, termId });
+    const sessionInfo = await termService.getOrError({ id: termId }, termService.includeables);
 
-    if (!studentScores) {
+    const totalClassmates = await studentService.count({ classId: student.classId });
+
+    const studentScores = await studentScoreService.getAll(
+      { studentId, classId, termId },
+      studentScoreService.includeables,
+    );
+
+    if (studentScores.length === 0) {
       throw new BadRequestError('Student has no score for this class or term');
     }
 
-    const allStudentScores = await studentScoreService.getAll({ classId, termId });
+    const allStudentScores = await studentScoreService.getAll(
+      { classId, termId },
+      studentScoreService.includeables,
+    );
 
-    const classSubjects = await classSubjectService.getAll({ id: classId, termId });
+    const classSubjects = await classSubjectService.getAll({ classId, termId });
 
     if (classSubjects.length === 0) {
       throw new BadRequestError('No subject was set up for this class or this term');
@@ -38,7 +48,7 @@ class ReportService {
 
     const totalObtainable = classSubjects.length * 100;
 
-    const totalScore = await studentScoreService.sum('total', { id: studentId, classId, termId });
+    const totalScore = await studentScoreService.sum('total', { studentId, classId, termId });
 
     const studentAveragePercent = (totalScore / totalObtainable) * 100;
 
@@ -49,18 +59,17 @@ class ReportService {
       termId,
       student.id,
     );
-    const schoolInfo = await schoolService.get({});
 
     return {
-      schoolInfo,
       student,
+      sessionInfo,
       academics: finalScores,
-      analytics: {
-        totalObtainable,
-        totalScore,
-        studentAveragePercent,
-        ...averagesAndPosition,
-      },
+      totalObtainable,
+      totalClassmates,
+      totalScore,
+      totalSubject: classSubjects.length,
+      studentAveragePercent,
+      ...averagesAndPosition,
     };
   }
 
@@ -70,6 +79,10 @@ class ReportService {
   ) {
     return studentScores.map((studentScore) => {
       const subjectId = studentScore.subjectId;
+
+      console.log(studentScore);
+
+      const subject = studentScore?.subject.name;
 
       const subjectScores = allStudentScores.filter((s) => s.subjectId === subjectId);
 
@@ -83,10 +96,10 @@ class ReportService {
         subjectScores.reduce((sum, s) => sum + s.total, 0) / subjectScores.length;
 
       return {
-        subjectId,
+        subject,
         studentScore: studentScore.total,
-        contAssessment: studentScore.contAssessment,
-        examScore: studentScore.examScore,
+        ca: studentScore.contAssessment,
+        exam: studentScore.examScore,
         grade: studentScore.grade,
         highestScore,
         lowestScore,

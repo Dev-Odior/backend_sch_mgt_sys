@@ -5,9 +5,11 @@ import { studentReportService } from '@src/services/student';
 export default class StudentReportController {
   public async generateReport(req: Request, res: Response, next: NextFunction): Promise<Response> {
     try {
-      const { body } = req;
+      const {
+        paramIds: { termId, classId, studentId },
+      } = req;
 
-      const data = await studentReportService.generate(body);
+      const data = await studentReportService.generate({ termId, classId, studentId });
 
       return res.status(200).json({
         message: 'Student report retrieved successfully.',

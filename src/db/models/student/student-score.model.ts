@@ -38,6 +38,9 @@ class StudentSubjectScores
   declare examScore: number;
   declare grade: string;
   declare total: number;
+
+  declare readonly subject?: Subject;
+  declare readonly student?: Student;
 }
 
 export function init(connection: Sequelize) {
