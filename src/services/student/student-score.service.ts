@@ -134,7 +134,7 @@ class StudentScoreService extends BaseService<StudentSubjectScores> {
       throw new Error('You can only enter the current term.');
     }
 
-    const classSubject = await classSubjectService.get({ classId, termId });
+    const classSubject = await classSubjectService.get({ classId, termId, subjectId });
 
     if (!classSubject) {
       throw new BadRequestError(

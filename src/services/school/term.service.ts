@@ -24,8 +24,6 @@ class TermService extends BaseService<Term> {
     const terms = await this.count({ academicSessionId });
 
     if (terms === academicSession.numberOfTerms) {
-      console.log(terms, academicSession.numberOfTerms);
-
       throw new BadRequestError(
         'You have reach the maximum number of term for the current academic session.',
       );
@@ -53,7 +51,9 @@ class TermService extends BaseService<Term> {
       throw new BadRequestError('This term overlaps with another existing term.');
     }
 
-    const term = await this.defaultModel.create({ ...data }, { transaction });
+    const updatedName = `${data.name} (${academicSession.name})`;
+
+    const term = await this.defaultModel.create({ ...data, name: updatedName }, { transaction });
 
     return term;
   }
