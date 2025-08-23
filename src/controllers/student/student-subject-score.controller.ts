@@ -87,4 +87,24 @@ export default class StudentSubjectScoreController {
       next(error);
     }
   }
+
+  public async lastScore(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try {
+      const {
+        paramIds: { studentId },
+      } = req;
+
+      console.log('this was hit');
+
+      const data = await studentScoreService.get({ studentId }, [], [['createdAt', 'DESC']]);
+
+      return res.status(200).json({
+        message: 'Student last subject score successfully.',
+        data,
+      });
+    } catch (error) {
+      serverConfig.DEBUG(`Error in student subject score Controller last score method:${error}`);
+      next(error);
+    }
+  }
 }

@@ -3,6 +3,7 @@ import { Router } from 'express';
 import StudentSubjectScoreController from '@src/controllers/student/student-subject-score.controller';
 import systemMiddleware from '@src/middlewares/system.middleware';
 import studentScoreValidator from '@src/utils/validators/student/student-score.validator';
+import authMiddleware from '@src/middlewares/auth.middleware';
 
 class StudentScoreRoutes extends StudentSubjectScoreController {
   public router: Router;
@@ -17,12 +18,28 @@ class StudentScoreRoutes extends StudentSubjectScoreController {
     this.router
       .route('/')
       .get(this.index)
-      .post(systemMiddleware.validateRequestBody(studentScoreValidator.createScore), this.create);
+      .post(
+        authMiddleware.validateAdminTeacherAccess,
+        systemMiddleware.validateRequestBody(studentScoreValidator.createScore),
+        this.create,
+      );
 
     this.router
       .route('/:id')
-      .put(systemMiddleware.formatRequestParamId('id'), this.update)
-      .delete(systemMiddleware.formatRequestParamId('id'), this.delete);
+      .put(
+        authMiddleware.validateAdminTeacherAccess,
+        systemMiddleware.formatRequestParamId('id'),
+        this.update,
+      )
+      .delete(
+        authMiddleware.validateAdminTeacherAccess,
+        systemMiddleware.formatRequestParamId('id'),
+        this.delete,
+      );
+
+    this.router
+      .route('/latest/:studentId')
+      .get(systemMiddleware.formatRequestParamId('studentId'), this.lastScore);
   }
 }
 

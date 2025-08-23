@@ -16,7 +16,7 @@ class StudentRoutes {
   routes(): void {
     this.router.use(authMiddleware.validateUserAccess);
 
-    this.router.use('/score', authMiddleware.validateAdminTeacherAccess, studentScoreRoute);
+    this.router.use('/score', studentScoreRoute);
 
     this.router.use('/report', reportRoutes);
 
