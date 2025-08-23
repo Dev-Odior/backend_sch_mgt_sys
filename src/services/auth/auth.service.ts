@@ -137,6 +137,10 @@ class AuthService extends BaseService<Staff> {
         where: { email },
       });
 
+      if (!data) {
+        throw new BadRequestError('You are not a teacher!');
+      }
+
       if (!data.isActive) {
         throw new UnauthorizedError(
           'You are not allowed to access this application, contact administrator.',
