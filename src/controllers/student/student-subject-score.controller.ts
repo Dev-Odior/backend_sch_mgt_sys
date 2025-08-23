@@ -94,7 +94,6 @@ export default class StudentSubjectScoreController {
         paramIds: { studentId },
       } = req;
 
-      console.log('this was hit');
 
       const data = await studentScoreService.get({ studentId }, [], [['createdAt', 'DESC']]);
 

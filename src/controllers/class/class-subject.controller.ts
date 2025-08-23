@@ -92,16 +92,10 @@ export default class ClassSubjectServiceController {
 
       const staff = await staffService.getOrError({ id });
 
-      console.log(staff);
-
-      console.log(classSubjectId);
-
       const subject = await classSubjectService.get({
         id: classSubjectId,
         classId: staff.classId,
       });
-
-      console.log(subject);
 
       if (!subject) {
         throw new UnauthorizedError('You do not have the permission to delete this class subject.');

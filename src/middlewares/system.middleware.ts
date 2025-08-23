@@ -73,10 +73,6 @@ class SystemMiddleware {
       try {
         const { params, paramIds } = req;
 
-        console.log(param, 'This is the param');
-
-        console.log(params, 'These are the params.');
-
         req.paramIds = { ...paramIds };
         req.paramIds[`${param}`] = Number(params[param]);
 

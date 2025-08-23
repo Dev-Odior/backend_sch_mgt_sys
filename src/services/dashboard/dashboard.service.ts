@@ -28,7 +28,6 @@ class DashboardService {
       scoreFormularService.get({}),
     ]);
 
-    console.log(totalStudent.length);
 
     return {
       totalStudent: totalStudent.length,

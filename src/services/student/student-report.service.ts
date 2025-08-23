@@ -91,8 +91,6 @@ class ReportService {
     return studentScores.map((studentScore) => {
       const subjectId = studentScore.subjectId;
 
-      console.log(studentScore);
-
       const subject = studentScore?.subject.name;
 
       const subjectScores = allStudentScores.filter((s) => s.subjectId === subjectId);
